@@ -1,0 +1,76 @@
+server:
+  port: 8089
+
+spring:
+
+  cloud:
+
+    gateway:
+
+      # =========================
+      # GLOBAL CORS CONFIG
+      # =========================
+      globalcors:
+
+        # IMPORTANT FOR PREFLIGHT
+        add-to-simple-url-handler-mapping: true
+
+        corsConfigurations:
+
+          '[/**]':
+
+            allowedOrigins:
+              - "${FRONTEND_CORS_URL:http://localhost:5173}"
+
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+
+            allowedHeaders:
+              - "*"
+
+            allowCredentials: true
+
+      # =========================
+      # ROUTES
+      # =========================
+      routes:
+
+        # AUTH SERVICE
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/auth/**
+
+        # GRIEVANCE SERVICE
+        - id: grievance-service
+          uri: ${GRIEVANCE_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/grievances/**
+
+        # NOTIFICATION SERVICE
+        - id: notification-service
+          uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/notification/**
+
+        # WORKFLOW SERVICE
+        - id: workflow-service
+          uri: ${GRIEVANCE_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/workflow/**
+
+        # LOCATIONS
+        - id: locations-service
+          uri: ${GRIEVANCE_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/locations/**
+
+        # CATEGORIES
+        - id: categories-service
+          uri: ${GRIEVANCE_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/categories/**
