@@ -1,6 +1,18 @@
 server:
   port: 8089
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+
 spring:
 
   cloud:
